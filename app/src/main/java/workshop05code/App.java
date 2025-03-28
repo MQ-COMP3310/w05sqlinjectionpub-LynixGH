@@ -35,18 +35,20 @@ public class App {
      */
     public static void main(String[] args) {
         SQLiteConnectionManager wordleDatabaseConnection = new SQLiteConnectionManager("words.db");
+        logger.log(Level.INFO, "starting wordle connection");
 
         wordleDatabaseConnection.createNewDatabase("words.db");
+        logger.log(Level.INFO, "attempting to create new database");
         if (wordleDatabaseConnection.checkIfConnectionDefined()) {
-            System.out.println("Wordle created and connected.");
+            logger.log(Level.INFO, "database created and connected");
         } else {
-            System.out.println("Not able to connect. Sorry!");
+            logger.log(Level.INFO, "could not create database");
             return;
         }
         if (wordleDatabaseConnection.createWordleTables()) {
-            System.out.println("Wordle structures in place.");
+            logger.log(Level.INFO, "wordle structures in place");
         } else {
-            System.out.println("Not able to launch. Sorry!");
+            logger.log(Level.INFO,"could not launch");
             return;
         }
 
@@ -56,13 +58,13 @@ public class App {
             String line;
             int i = 1;
             while ((line = br.readLine()) != null) {
-                System.out.println(line);
+                logger.log(Level.INFO, "adding word: " + line);
                 wordleDatabaseConnection.addValidWord(i, line);
                 i++;
             }
 
         } catch (IOException e) {
-            System.out.println("Not able to load . Sorry!");
+            logger.log(Level.INFO, "could not load" + e.getMessage());
             System.out.println(e.getMessage());
             return;
         }
@@ -72,19 +74,35 @@ public class App {
         try (Scanner scanner = new Scanner(System.in)) {
             System.out.print("Enter a 4 letter word for a guess or q to quit: ");
             String guess = scanner.nextLine();
+            logger.log(Level.INFO, "user input for guess: " + guess);
 
             while (!guess.equals("q")) {
                 System.out.println("You've guessed '" + guess+"'.");
 
-                if (wordleDatabaseConnection.isValidWord(guess)) { 
-                    System.out.println("Success! It is in the the list.\n");
-                }else{
-                    System.out.println("Sorry. This word is NOT in the the list.\n");
+                for (char c : guess.toCharArray()) {
+                    if((c >= 'a' && c <= 'z') && guess.length() == 4){ {
+
+                        if (wordleDatabaseConnection.isValidWord(guess)) { 
+                            System.out.println("Success! It is in the the list.\n");
+                            logger.log(Level.INFO, "guess is correct");
+                        }else{
+                            System.out.println("Sorry. This word is NOT in the the list.\n");
+                            logger.log(Level.INFO, "guess is incorrect");
+                        }
+
+                    }
                 }
+                    else {
+                        System.out.println("Please enter a valid 4 letter word.\n");
+                        logger.log(Level.INFO, "guess was incorrect format");
+                    }
+                }
+
 
                 System.out.print("Enter a 4 letter word for a guess or q to quit: " );
                 guess = scanner.nextLine();
             }
+            logger.log(Level.INFO, "user quit");
         } catch (NoSuchElementException | IllegalStateException e) {
             e.printStackTrace();
         }
