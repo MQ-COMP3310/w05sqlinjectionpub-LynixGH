@@ -69,7 +69,7 @@ public class SQLiteConnectionManager {
 
             }
         } catch (SQLException e) {
-            logger.log(Level.INFO, "Could not create database: " + e.getMessage());
+            logger.log(Level.WARNING, "Could not create database: " + e.getMessage());
         }
     }
 
@@ -88,7 +88,7 @@ public class SQLiteConnectionManager {
                     return true;
                 }
             } catch (SQLException e) {
-                logger.log(Level.INFO, "Could not connect to database: " + e.getMessage());
+                logger.log(Level.WARNING, "Could not connect to database: " + e.getMessage());
                 return false;
             }
         }
@@ -113,7 +113,7 @@ public class SQLiteConnectionManager {
                 return true;
 
             } catch (SQLException e) {
-                logger.log(Level.INFO, "Could not create tables: " + e.getMessage());
+                logger.log(Level.WARNING, "Could not create tables: " + e.getMessage());
                 return false;
             }
         }
@@ -133,7 +133,7 @@ public class SQLiteConnectionManager {
                 PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.executeUpdate();
         } catch (SQLException e) {
-            logger.log(Level.INFO, "Could not add word: " + e.getMessage());
+            logger.log(Level.WARNING, "Could not add word: " + e.getMessage());
         }
 
     }
@@ -159,7 +159,7 @@ public class SQLiteConnectionManager {
             return false;
 
         } catch (SQLException e) {
-            logger.log(Level.INFO, "Could not check word: " + e.getMessage());
+            logger.log(Level.WARNING, "Could not check word: " + e.getMessage());
             return false;
         }
 

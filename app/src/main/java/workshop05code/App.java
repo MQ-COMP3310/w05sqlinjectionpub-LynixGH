@@ -42,13 +42,13 @@ public class App {
         if (wordleDatabaseConnection.checkIfConnectionDefined()) {
             logger.log(Level.INFO, "database created and connected");
         } else {
-            logger.log(Level.INFO, "could not create database");
+            logger.log(Level.WARNING, "could not create database");
             return;
         }
         if (wordleDatabaseConnection.createWordleTables()) {
             logger.log(Level.INFO, "wordle structures in place");
         } else {
-            logger.log(Level.INFO,"could not launch");
+            logger.log(Level.WARNING,"could not launch");
             return;
         }
 
@@ -64,7 +64,7 @@ public class App {
             }
 
         } catch (IOException e) {
-            logger.log(Level.INFO, "could not load" + e.getMessage());
+            logger.log(Level.WARNING, "could not load" + e.getMessage());
             System.out.println(e.getMessage());
             return;
         }
